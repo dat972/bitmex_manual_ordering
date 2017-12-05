@@ -1,0 +1,6 @@
+/settings.py
+*.pyc
+dist/
+*.egg-info/
+env
+.idea/
