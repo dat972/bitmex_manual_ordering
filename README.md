@@ -3,7 +3,7 @@ BitMEX Manual Ordering Through API
 
 This code is a modification of the publicly available Bitmex Market Maker which can be found here https://github.com/BitMEX/sample-market-maker.
 
-This code was created to give the user the ability to manual input orders on Bitmex through the command line using the API. This method allows for a variety of special order types and help with order placement during times of high trading volumes where the trading interface is unusable through the web.
+This code was created to give the user the ability to manually input orders on Bitmex through the command line using the API. This method allows for a variety of special order types and helps with order placement during times of high trading volumes where the trading interface is unusable through the web.
 
 
 Order Types Currently Supported
