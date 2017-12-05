@@ -867,6 +867,7 @@ class OrderManager:
 # Helpers
 #
 
+#testing github commits
 
 def XBt_to_XBT(XBt):
     return float(XBt) / constants.XBt_TO_XBT
