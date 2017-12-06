@@ -22,10 +22,15 @@ Special Order Types
 
 Scaled - Define a price range and place an order evenly throughout that range in n chunks.
 Ex: place buy order for 10,000 contracts from the range of $1,000 - $2,000 in 5 chunks. This will create the following orders 
+
      2,000 contracts @ $1,000
+     
      2,000 contracts @ $1,250
+     
      2,000 contracts @ $1,500
+     
      2,000 contracts @ $1,750
+     
      2,000 contracts @ $2,000
 
 Iceberg(Not Coded) - same concept as scaled orders but with uneven order distribution i.e. smaller orders closer to current price and bigger orders further away from current price
