@@ -9,8 +9,11 @@ This code was created to give the user the ability to manually input orders on B
 Order Types Currently Supported
 ------------------
 Limit - place a single limit order buy or sell: type (l) and hit enter when prompted
+
 Market - place a single market order buy or sell: type (m) and hit enter when prompted
+
 Close - will market close all open positions: type (c) and hit enter when prompted
+
 Special - this will initation the special order sequence for more complicated orders: type (x) and hit enter when prompted
 
 
