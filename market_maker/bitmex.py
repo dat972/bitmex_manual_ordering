@@ -178,6 +178,7 @@ class BitMEX(object):
             'orderQty': quantity,
             'side': side,
             'price': price,
+            "execInst": "ParticipateDoNotInitiate",
             'clOrdID': clOrdID
         }
         return self._curl_bitmex(path=endpoint, postdict=postdict, verb="POST")

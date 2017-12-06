@@ -155,11 +155,11 @@ class ExchangeInterface:
         buys = [b for b in all_buys if b['price']]
         stops = [b for b in all_buys if not b['price']]
         if buys:
-            highest_buy = min(sells or [], key=lambda o: o['price'])
+            highest_buy = max(buys or [], key=lambda o: o['price'])
         else:
             highest_buy = None
         if stops:
-            highest_stop = min(stops or [], key=lambda o: o['stopPx'])
+            highest_stop = max(stops or [], key=lambda o: o['stopPx'])
         else:
             highest_stop = None
         
@@ -541,9 +541,49 @@ class OrderManager:
         sys.exit()
 
     ####
+    # User Prompt Functions
+    #
     # functions to help with exiting if statements when users input bad instructions
     # (program while loop won't break with bad user input)
     ###
+    def limit_order_logic(self):
+        # this function will return (contracts, price) after completing some sanity checks to ensure you
+        # dont fat finger orders
+        contracts = input("#Contracts: ")
+        price = input("Bid Price: ")
+        
+        # Add Price Sanity Check to Prevent fat fingering large orders
+        max_safety_size = 40000
+        price_sanity = int(price)
+        if price_sanity < max_safety_size:
+            order = {
+                'contracts' : contracts,
+                'price' : price
+            }
+            return order
+        else:
+            print("** Safety Check Order Size **")
+            double_check = int(input("Order Size Safety Check, Please Re-Enter Order Size: "))
+            if price_sanity == double_check:
+                print("Verified Order Size")
+                order = {
+                    'contracts' : contracts,
+                    'price' : price
+                }
+                return(order)
+            else:
+                print("Please re-enter Order")
+                contracts = input("# Contracts: ")
+                price = input("Bid Price: ")
+                if contracts and price:
+                    order = {
+                    'contracts' : contracts,
+                    'price' : price
+                    }
+                    return(order)
+                else:
+                    return None
+
     def scaled_order_logic(self):
         order_side = input("Scaled (b)uy/(s)ell? ").lower()
 
@@ -773,17 +813,18 @@ class OrderManager:
                 order_type = input("Limit or Market order (l)/(m): ").lower()
 
                 if order_type == 'l':
-                    contracts = input("#Contracts: ")
-                    price = input("Bid Price: ")
+                    limit_order = self.limit_order_logic()
                     sure = input("Are you sure you want to order (y)/(n): ")
-                    if sure == 'y':
-                        print ("Executing Buy Order for {} Contracts @ {}".format(contracts, price))
-                        self.exchange.create_limit_order(contracts, price, side)
+                    if limit_order and sure == 'y':
+                        print ("Executing Buy Order for {} Contracts @ {}".format(limit_order['contracts'], limit_order['price']))
+                        self.exchange.create_limit_order(limit_order['contracts'], limit_order['price'], side)
                     else:
                         print("Cancelling Order and Refreshing Data")
+
                 elif order_type == 'm':
                     contracts = input("#Contracts: ")
-                    sure = input("Are you sure you want to order (y)/(n): ")
+                    sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                    # TODO add sanity checks to prevent fat fingering large orders 
                     if sure == 'y':
                         print ("Executing Market Buy for {} Contracts".format(contracts))
                         self.exchange.create_market_order(contracts, side)
@@ -797,17 +838,18 @@ class OrderManager:
                 order_type = input("Limit or Market order (l)/(m): ").lower()
 
                 if order_type == 'l':
-                    contracts = input("#Contracts: ")
-                    price = input("Bid Price: ")
+                    limit_order = self.limit_order_logic()
                     sure = input("Are you sure you want to order (y)/(n): ")
-                    if sure == 'y':
-                        print ("Executing Sell Order for {} Contracts @ {}".format(contracts, price))
-                        self.exchange.create_limit_order(contracts, price, side)
+                    if limit_order and sure == 'y':
+                        print ("Executing Buy Order for {} Contracts @ {}".format(limit_order['contracts'], limit_order['price']))
+                        self.exchange.create_limit_order(limit_order['contracts'], limit_order['price'], side)
                     else:
                         print("Cancelling Order and Refreshing Data")
+
                 elif order_type == 'm':
                     contracts = input("#Contracts: ")
-                    sure = input("Are you sure you want to order (y)/(n): ")
+                    sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                    # TODO add sanity checks to prevent fat fingering large orders 
                     if sure == 'y':
                         print ("Executing Market Sell for {} Contracts".format(contracts))
                         self.exchange.create_market_order(contracts, side)
@@ -824,7 +866,9 @@ class OrderManager:
                 else:
                     print("Canceling Order Close Command")
 
-            # special order types like waterfall and scaled etc
+            # - - - - - - - 
+            # Special Order: types like waterfall and scaled etc
+            # - - - - - - - 
             elif order == 'x':
                 special = input("Special Order Types: (s)caled/(i)ceberg: ").lower()
                 if special == 's':
