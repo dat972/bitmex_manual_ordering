@@ -822,12 +822,25 @@ class OrderManager:
                         print("Cancelling Order and Refreshing Data")
 
                 elif order_type == 'm':
-                    contracts = input("#Contracts: ")
-                    sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
-                    # TODO add sanity checks to prevent fat fingering large orders 
-                    if sure == 'y':
-                        print ("Executing Market Buy for {} Contracts".format(contracts))
-                        self.exchange.create_market_order(contracts, side)
+                    contracts = input("# Contracts: ")
+                    # Sanity Check To Prevent fat finger
+                    safety_size = 40000 # if orders are bigger than this initiatie safety checks
+                    if int(contracts) > safety_size:
+                        print("*** Fat Finger Safety Check ***")
+                        contracts_double_check = int(input("Please re-enter # Contracts: "))
+                        if contracts_double_check == contracts:
+                            print("Order Size Successfully Confirmed")
+                            sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                            if sure == 'y':
+                                print ("Executing Market Sell for {} Contracts".format(contracts))
+                                self.exchange.create_market_order(contracts, side)
+                        else:
+                            print("Order Size Verification Failure: Refreshing Loop, Please Try Again.")
+                    elif int(contracts) < safety_size:
+                        sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                        if sure == 'y':
+                            print ("Executing Market Sell for {} Contracts".format(contracts))
+                            self.exchange.create_market_order(contracts, side)
                     else:
                         print("Cancelling Order and Refreshing Data")
                 else:
@@ -847,12 +860,25 @@ class OrderManager:
                         print("Cancelling Order and Refreshing Data")
 
                 elif order_type == 'm':
-                    contracts = input("#Contracts: ")
-                    sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
-                    # TODO add sanity checks to prevent fat fingering large orders 
-                    if sure == 'y':
-                        print ("Executing Market Sell for {} Contracts".format(contracts))
-                        self.exchange.create_market_order(contracts, side)
+                    contracts = input("# Contracts: ")
+                    # Sanity Check To Prevent fat finger
+                    safet_size = 40000 # if orders are bigger than this initiatie safety checks
+                    if int(contracts) > safety_size:
+                        print("*** Fat Finger Safety Check ***")
+                        contracts_double_check = int(input("Please re-enter # Contracts: "))
+                        if contracts_double_check == contracts:
+                            print("Order Size Successfully Confirmed")
+                            sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                            if sure == 'y':
+                                print ("Executing Market Sell for {} Contracts".format(contracts))
+                                self.exchange.create_market_order(contracts, side)
+                        else:
+                            print("Order Size Verification Failure: Refreshing Loop, Please Try Again.")
+                    elif int(contracts) < safety_size:
+                        sure = input("Are you sure you want to order {:,} Contracts (y)/(n): ".format(int(contracts)))
+                        if sure == 'y':
+                            print ("Executing Market Sell for {} Contracts".format(contracts))
+                            self.exchange.create_market_order(contracts, side)
                     else:
                         print("Cancelling Order and Refreshing Data")
                 else:
