@@ -35,10 +35,10 @@ Stop Orders
 2. Scaled Stop - same as scaled order only for stops
 3. Emergency Stop (Unsupported) - this order type is inteded to prevent getting REKT on the ocassion that one of your stop orders does not trigger in the market. This order will Create 50 stop orders in the following way 
 
-     10 orders for Total # of Contracts Input by the User
-     10 orders for 1,000 Contracts 
-     10 orders for 100 Contracts 
-     10 orders for 10 Contracts 
-     10 orders for 1 Contracts
+        10 orders for Total # of Contracts Input by the User
+        10 orders for 1,000 Contracts 
+        10 orders for 100 Contracts 
+        10 orders for 10 Contracts 
+        10 orders for 1 Contracts
 
 The purpose of this is to (A) input your stop order multiple times incase one does not get filled and (B) input stop orders that will protect you in the case that your stop order is only partially filled for whatever reason
