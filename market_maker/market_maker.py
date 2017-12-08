@@ -550,7 +550,19 @@ class OrderManager:
         # this function will return (contracts, price) after completing some sanity checks to ensure you
         # dont fat finger orders
         contracts = input("#Contracts: ")
+        try:
+            if float(contracts):
+                pass
+        except:
+            print("Bad Input Refreshing Data")
+            return None
         price = input("Bid Price: ")
+        try:
+            if float(price):
+                pass
+        except:
+            print("Bad Input Refreshing Data")
+            return None
         
         # Add Price Sanity Check to Prevent fat fingering large orders
         max_safety_size = 40000
@@ -814,7 +826,8 @@ class OrderManager:
 
                 if order_type == 'l':
                     limit_order = self.limit_order_logic()
-                    sure = input("Are you sure you want to order (y)/(n): ")
+                    if limit_order:
+                        sure = input("Are you sure you want to order (y)/(n): ")
                     if limit_order and sure == 'y':
                         print ("Executing Buy Order for {} Contracts @ {}".format(limit_order['contracts'], limit_order['price']))
                         self.exchange.create_limit_order(limit_order['contracts'], limit_order['price'], side)
@@ -852,7 +865,8 @@ class OrderManager:
 
                 if order_type == 'l':
                     limit_order = self.limit_order_logic()
-                    sure = input("Are you sure you want to order (y)/(n): ")
+                    if limit_order:
+                        sure = input("Are you sure you want to order (y)/(n): ")
                     if limit_order and sure == 'y':
                         print ("Executing Buy Order for {} Contracts @ {}".format(limit_order['contracts'], limit_order['price']))
                         self.exchange.create_limit_order(limit_order['contracts'], limit_order['price'], side)
